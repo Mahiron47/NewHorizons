@@ -1,0 +1,6 @@
+#ifndef HV_DEVICE_HPP
+#define HV_DEVICE_HPP
+
+
+
+#endif /* HV_DEVICE_EXTENSIONS_HPP */
