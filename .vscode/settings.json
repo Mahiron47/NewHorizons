@@ -11,5 +11,6 @@
 	],
 	"C_Cpp.default.defines": [
 		"VK_USE_PLATFORM_WIN32_KHR"
-	]
+	],
+	"cmake.ctest.neverDebugTestsWithLaunchConfiguration": false
 }

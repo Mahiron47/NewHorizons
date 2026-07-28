@@ -5,9 +5,67 @@
 #include <string>
 #include <utility>
 
+static int MoveChecker_copy_count = 0;
+static int MoveChecker_move_count = 0;
+static int MoveChecker_copy_assign_count = 0;
+static int MoveChecker_move_assign_count = 0;
+
+struct MoveChecker {
+    int value;
+
+    MoveChecker() : value(5) {};
+
+    MoveChecker(int value) : value(value) {};
+
+    MoveChecker(const MoveChecker& other) : value(other.value) { 
+        ++MoveChecker_copy_count;
+    }
+
+    MoveChecker(MoveChecker&& other) noexcept : value(other.value) { 
+        ++MoveChecker_move_count;
+        other.value = 0;
+    }
+
+    MoveChecker& operator=(const MoveChecker& other) {
+        ++MoveChecker_copy_assign_count;
+        this->value = other.value;
+        return *this;
+    }
+
+    MoveChecker& operator=(MoveChecker&& other) noexcept {
+        ++MoveChecker_move_assign_count;
+        this->value = other.value;
+        other.value = 0;
+        return *this;
+    }
+};
+
+TEST_CASE("Hstack::Hstack", "[Hstack]") {
+
+    SECTION("Hstack::Hstack(size)") {
+        Hstack<size_t, std::string> stack = Hstack<size_t, std::string>(47);
+
+        REQUIRE(stack.size() == 47);
+    }
+
+    SECTION("Hstack::Hstack(Args)") {
+        Hstack<size_t, int> stack = {
+            5, 4, 5, 2, 95, 23
+        };
+
+        REQUIRE(stack[0] == 5);
+        REQUIRE(stack[1] == 4);
+        REQUIRE(stack[2] == 5);
+        REQUIRE(stack[3] == 2);
+        REQUIRE(stack[4] == 95);
+        REQUIRE(stack[5] == 23);
+    }
+
+}
+
 TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
 
-    SECTION("Hstack::push(lvalue reference)") {
+    SECTION("Hstack::push(static value)") {
     	Hstack<std::size_t, int> stack;
         
         stack.push(10);
@@ -17,13 +75,32 @@ TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
         REQUIRE(stack.last() == 30);
     }
 
-    SECTION("Hstack::push(rvalue reference)") {
-        Hstack<std::size_t, std::string> stack;
-        std::string value = "alpha";
-        
-        stack.push(std::move(value));
+    SECTION("Hstack::push(lvalue reference)") {
+        Hstack<std::size_t, int> stack;
+        int value = 47;
 
-        REQUIRE(stack.last() == "alpha");
+        stack.push(value);
+
+        REQUIRE(stack.last() == 47);
+        REQUIRE(value == 47);
+    }
+
+    SECTION("Hstack::push(rvalue reference)") {
+        // reset counters
+        MoveChecker_copy_count = 0; MoveChecker_move_count = 0;
+        MoveChecker_copy_assign_count = 0; MoveChecker_move_assign_count = 0;
+
+        Hstack<std::size_t, MoveChecker> stack;
+        MoveChecker value = MoveChecker(42);
+
+        stack.push(value);
+
+        REQUIRE(MoveChecker_move_count == 0);
+        REQUIRE(MoveChecker_copy_count == 0);
+        REQUIRE(MoveChecker_move_assign_count == 1);
+        REQUIRE(MoveChecker_copy_assign_count == 0);
+        REQUIRE(stack.last().value == 42);
+        REQUIRE(value.value == 0); // value should be in a moved-from state
     }
 
     SECTION("Hstack::last : empty stack throws std::out_of_range") {
@@ -44,8 +121,11 @@ TEST_CASE("Hstack::pop", "[Hstack]") {
         stack.push(3250);
         stack.push(-241);
 
-        REQUIRE(stack.pop() == -241);
-        REQUIRE(stack.pop() == 3250);
+        int& value1 = stack.pop();
+        int& value2 = stack.pop();
+
+        REQUIRE(value1 == -241);
+        REQUIRE(value2 == 3250);
         REQUIRE(stack.pop() == 204);
         REQUIRE(stack.pop() == 200);
         REQUIRE(stack.pop() == 100);
@@ -58,16 +138,28 @@ TEST_CASE("Hstack::pop", "[Hstack]") {
     }
 
     SECTION("Hstack::pop(rvalue) : properly moves complex objects") {
-        Hstack<std::size_t, std::string> stack;
+        // reset counters
+        MoveChecker_copy_count = 0; MoveChecker_move_count = 0;
+        MoveChecker_copy_assign_count = 0; MoveChecker_move_assign_count = 0;
+
+        Hstack<std::size_t, MoveChecker> stack;
+        MoveChecker value1 = MoveChecker(42);
+        MoveChecker value2 = MoveChecker(47);
         
-        stack.push("hello");
-        stack.push("world");
+        stack.push(value1);
+        stack.push(value2);
         
-        std::string result1 = stack.pop();
-        std::string result2 = stack.pop();
+        MoveChecker& result2 = stack.pop();
+        MoveChecker& result1 = stack.pop();
         
-        REQUIRE(result1 == "world");
-        REQUIRE(result2 == "hello");
+        REQUIRE(MoveChecker_copy_count == 0);
+        REQUIRE(MoveChecker_move_count == 0);
+        REQUIRE(MoveChecker_copy_assign_count == 0);
+        REQUIRE(MoveChecker_move_assign_count == 3);
+        REQUIRE(result1.value == 42);
+        REQUIRE(result2.value == 47);
+        REQUIRE(value1.value == 0);
+        REQUIRE(value2.value == 0);
     }
 
     SECTION("Hstack::pop, Hstack::last : returns mutable reference to top") {

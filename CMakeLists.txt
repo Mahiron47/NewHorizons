@@ -4,20 +4,22 @@ project(Horizons VERSION 0.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+
 # Find Vulkan package
 find_package(Vulkan REQUIRED)
 
 # Create your executable
 add_executable(Horizons src/main.cpp
     					src/window/Hwindow.cpp
-    					src/threads/HmainThread.cpp
+    					src/threads/HrenderThread.cpp
     					src/vulkan/surface/HVsurface.cpp
     					src/vulkan/instance/HVinstance.cpp
     					src/vulkan/instance/extensions/HVinstanceExtensions.cpp
-						src/vulkan/instance/layers/HVinstanceLayers.cpp
     					src/vulkan/device/HVdevice.cpp
 						src/vulkan/device/extensions/HVdeviceExtensions.cpp
 						src/vulkan/device/layers/HVdeviceLayers.cpp
+						src/Horizon.cpp
 )
 
 # Include directories

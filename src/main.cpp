@@ -1,12 +1,17 @@
-#include "threads/HmainThread.hpp"
+//#include "window/Hwindow.hpp"
+
+#include <iostream>
+
+int f(const int& x) { return x; }
 
 int main(int, char**) {
-    // Создание главного потока
-    //HmainThread mainThread = HmainThread::initialize();
+    int x = 0;
+    
+    x = sizeof x;
 
-    //mainThread.execute();
-
-    MessageBox(NULL, TEXT("Could not register window class"), NULL, MB_ICONERROR);
+    std::cout << f(x + 7) << std::endl;
+    
+    //MessageBox(NULL, TEXT("Could not register window class"), NULL, MB_ICONERROR);
 }
 /* 
     Hwindow& mainWindow = Hwindow::initialize(1280, 720);

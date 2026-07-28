@@ -182,7 +182,7 @@ HVinstance&& HVinstance::reinitialize(bool enableValidationLayers, uint32_t vulk
     return HVinstance(instance, debugMessenger);
 }
 
-HVinstance& HVinstance::initialize(HVinstanceExtensions extensions, bool enableValidationLayers) {
+HVinstance& HVinstance::initialize(bool enableValidationLayers) {
     VkInstance instance; VkDebugUtilsMessengerEXT debugMessenger; 
 
     VkApplicationInfo appInfo {
@@ -201,7 +201,6 @@ HVinstance& HVinstance::initialize(HVinstanceExtensions extensions, bool enableV
 
 	uint32_t validation_layers_count = sizeof(validation_layers) / sizeof(validation_layers[0]);
 
-	
 
     VkInstanceCreateInfo createInfo {
         .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
@@ -210,8 +209,8 @@ HVinstance& HVinstance::initialize(HVinstanceExtensions extensions, bool enableV
         .pApplicationInfo = &appInfo,
         .enabledLayerCount = enableValidationLayers ? validation_layers_count : 0,
         .ppEnabledLayerNames = enableValidationLayers ? validation_layers : nullptr,
-        .enabledExtensionCount = extensions_count,
-        .ppEnabledExtensionNames = extensions
+        .enabledExtensionCount = 0,
+        .ppEnabledExtensionNames = nullptr
     };
 
     /* INSTANCE CREATION WITH SUCCESS CHECK */ {
@@ -256,19 +255,20 @@ HVinstance& HVinstance::initialize(HVinstanceExtensions extensions, bool enableV
 }
 
 HVinstance& HVinstance::operator=(HVinstance&& other) noexcept {
-    if (this != &other) {
-        if (debugMessenger != VK_NULL_HANDLE) {
-            vkDestroyDebugUtilsMessenger(instance, debugMessenger, nullptr);
-        } if (instance != VK_NULL_HANDLE) {
-            vkDestroyInstance(instance, nullptr);
-        }
+    if (this != &other) return *this;
 
-        instance = other.instance;
-        debugMessenger = other.debugMessenger;
-
-        other.instance = VK_NULL_HANDLE;
-        other.debugMessenger = VK_NULL_HANDLE;
+    if (debugMessenger != VK_NULL_HANDLE) {
+        vkDestroyDebugUtilsMessenger(this->instance, this->debugMessenger, nullptr);
+    } if (instance != VK_NULL_HANDLE) {
+        vkDestroyInstance(this->instance, nullptr);
     }
+
+    this->instance = other.instance;
+    this->debugMessenger = other.debugMessenger;
+
+    other.instance = VK_NULL_HANDLE;
+    other.debugMessenger = VK_NULL_HANDLE;
+
     return *this;
 }
 

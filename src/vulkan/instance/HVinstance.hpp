@@ -1,7 +1,7 @@
 #ifndef HV_INSTANCE_HPP
 #define HV_INSTANCE_HPP
 
-#include "vulkan/instance/HVinstanceExtensions.hpp"
+#include "vulkan/instance/extensions/HVinstanceExtensions.hpp"
 #include "vulkan/instance/layers/HVinstanceLayers.hpp"
 #include "memory/Hstack.hpp"
 #include "Horizon.hpp"
@@ -10,7 +10,6 @@
 
 class HVinstance {
 	static Hstack<uint32_t, HVinstance> instances;
-	HVinstanceExtensions extensions;
 
 // vulkan fields
  	VkInstance instance;
@@ -31,7 +30,7 @@ class HVinstance {
 	static HVinstance&& reinitialize(bool enableValidationLayers, uint32_t vulkan_version = VK_API_VERSION_1_3);
 
 public:
-	static HVinstance& initialize(HVinstanceExtensions extensions, bool enableValidationLayers = false);
+	static HVinstance& initialize(bool enableValidationLayers = false);
 
 // operators
 	static VkInstance operator[](uint32_t index) { return instances[index]; }

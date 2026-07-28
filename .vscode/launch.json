@@ -5,23 +5,13 @@
             "name": "Debug Vulkan Application",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/horizons",
+            "program": "${workspaceFolder}/out/build/horizons/Horizons.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
                 {"name": "VK_LAYER_PATH", "value": "path/to/vulkan/sdk/layers"}
             ],
-            "externalConsole": false
-        },
-        {
-            "name": "Debug Unit Tests",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/out/build/horizons-debug-ucrt64/tests/tests.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
@@ -32,6 +22,43 @@
                     "ignoreFailures": true
                 }
             ],
+            "preLaunchTask": "build"
+        },
+        {
+            "name": "Debug Unit Tests (gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${cmake.testProgram}",
+            "args": [ "${cmake.testArgs}" ],
+            "environment": [
+                {"name": "VK_LAYER_PATH", "value": "path/to/vulkan/sdk/layers"}
+            ],
+            "stopAtEntry": false,
+            "cwd": "${cmake.testWorkingDirectory}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build"
+        },
+        {
+            "name": "Debug Unit Tests (msvc)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${cmake.testProgram}",
+            "args": [ "${cmake.testArgs}" ],
+            "environment": [
+                {"name": "VK_LAYER_PATH", "value": "path/to/vulkan/sdk/layers"}
+            ],
+            "stopAtEntry": false,
+            "cwd": "${cmake.testWorkingDirectory}",
+            "externalConsole": false,
             "preLaunchTask": "build"
         }
     ]

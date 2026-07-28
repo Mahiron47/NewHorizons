@@ -4,7 +4,15 @@
 #include <iostream>
 #include <cstdint>
 #include <string>
-#include <vector>
+#include <stdexcept>
+
+#define interface class
+
+#ifdef UNICODE
+#define WTEXT LPWSTR
+#else
+#define WTEXT LPSTR
+#endif
 
 using std::string;
 

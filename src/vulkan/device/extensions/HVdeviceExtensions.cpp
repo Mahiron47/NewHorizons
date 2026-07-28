@@ -2,28 +2,28 @@
 
 HVdeviceExtensions::HVdeviceExtensions(std::initializer_list<const char*> extensions) {
 
-    auto comparator = [extensions](const char* extension) -> bool {
-		std::for_each(extensions.begin(), extensions.end(), [extension](const char* ext) {
-			if (strcmp(extension, ext) == 0) {
-				return true;
-			}
-		});
-	};
-
-	this->extensions_list = {
-		.vk_ext_descriptor_indexing 			= comparator(this->extensions_list.vk_ext_descriptor_indexing_name),
-		.vk_khr_buffer_device_address 			= comparator(this->extensions_list.vk_khr_buffer_device_address_name),
-		.vk_ext_scalar_block_layout 			= comparator(this->extensions_list.vk_ext_scalar_block_layout_name),
-		.vk_khr_uniform_buffer_standard_layout 	= comparator(this->extensions_list.vk_khr_uniform_buffer_standard_layout_name),
-		.vk_ext_inline_uniform_block 			= comparator(this->extensions_list.vk_ext_inline_uniform_block_name),
-		.vk_khr_push_descriptor 				= comparator(this->extensions_list.vk_khr_push_descriptor_name),
-		.vk_khr_dynamic_rendering 				= comparator(this->extensions_list.vk_khr_dynamic_rendering_name),
-		.vk_khr_synchronization2 				= comparator(this->extensions_list.vk_khr_synchronization2_name),
-		.vk_khr_timeline_semaphore 				= comparator(this->extensions_list.vk_khr_timeline_semaphore_name),
-		.vk_khr_copy_commands2 					= comparator(this->extensions_list.vk_khr_copy_commands2_name),
-		.vk_ext_extended_dynamic_state 			= comparator(this->extensions_list.vk_ext_extended_dynamic_state_name),
-		.vk_ext_extended_dynamic_state2 		= comparator(this->extensions_list.vk_ext_extended_dynamic_state2_name)
-	};
+    //auto comparator = [extensions](const char* extension) -> bool {
+	//	std::for_each(extensions.begin(), extensions.end(), [extension](const char* ext) {
+	//		if (strcmp(extension, ext) == 0) {
+	//			return true;
+	//		}
+	//	});
+	//};
+//
+	//this->extensions_list = {
+	//	.vk_ext_descriptor_indexing 			= comparator(this->extensions_list.vk_ext_descriptor_indexing_name),
+	//	.vk_khr_buffer_device_address 			= comparator(this->extensions_list.vk_khr_buffer_device_address_name),
+	//	.vk_ext_scalar_block_layout 			= comparator(this->extensions_list.vk_ext_scalar_block_layout_name),
+	//	.vk_khr_uniform_buffer_standard_layout 	= comparator(this->extensions_list.vk_khr_uniform_buffer_standard_layout_name),
+	//	.vk_ext_inline_uniform_block 			= comparator(this->extensions_list.vk_ext_inline_uniform_block_name),
+	//	.vk_khr_push_descriptor 				= comparator(this->extensions_list.vk_khr_push_descriptor_name),
+	//	.vk_khr_dynamic_rendering 				= comparator(this->extensions_list.vk_khr_dynamic_rendering_name),
+	//	.vk_khr_synchronization2 				= comparator(this->extensions_list.vk_khr_synchronization2_name),
+	//	.vk_khr_timeline_semaphore 				= comparator(this->extensions_list.vk_khr_timeline_semaphore_name),
+	//	.vk_khr_copy_commands2 					= comparator(this->extensions_list.vk_khr_copy_commands2_name),
+	//	.vk_ext_extended_dynamic_state 			= comparator(this->extensions_list.vk_ext_extended_dynamic_state_name),
+	//	.vk_ext_extended_dynamic_state2 		= comparator(this->extensions_list.vk_ext_extended_dynamic_state2_name)
+	//};
 
     this->init_extensions();
 }
@@ -65,39 +65,40 @@ void HVdeviceExtensions::init_extensions() {
 
 		auto extensions = available_extensions; 
 
-		auto comparator = [extensions](const char* extension) -> bool {
-			std::for_each(extensions.begin(), extensions.end(), [extension](const char* ext) {
-				if (strcmp(extension, ext) == 0) {
-					return true;
-				}
-			});
-		};
-
-		if (this->extensions_list.vk_ext_descriptor_indexing 				!= comparator(this->extensions_list.vk_ext_descriptor_indexing_name)) {
-			std::cout << "Extension VK_EXT_descriptor_indexing is not supported." 				<< std::endl;
-		} if (this->extensions_list.vk_khr_buffer_device_address 			!= comparator(this->extensions_list.vk_khr_buffer_device_address_name)) {
-			std::cout << "Extension VK_KHR_buffer_device_address is not supported." 			<< std::endl;
-		} if (this->extensions_list.vk_ext_scalar_block_layout 				!= comparator(this->extensions_list.vk_ext_scalar_block_layout_name)) {
-			std::cout << "Extension VK_EXT_scalar_block_layout is not supported." 				<< std::endl;
-		} if (this->extensions_list.vk_khr_uniform_buffer_standard_layout 	!= comparator(this->extensions_list.vk_khr_uniform_buffer_standard_layout_name)) {
-			std::cout << "Extension VK_KHR_uniform_buffer_standard_layout is not supported." 	<< std::endl;
-		} if (this->extensions_list.vk_ext_inline_uniform_block 			!= comparator(this->extensions_list.vk_ext_inline_uniform_block_name)) {
-			std::cout << "Extension VK_EXT_inline_uniform_block is not supported." 				<< std::endl;  
-		} if (this->extensions_list.vk_khr_push_descriptor 					!= comparator(this->extensions_list.vk_khr_push_descriptor_name)) {
-			std::cout << "Extension VK_KHR_push_descriptor is not supported." 					<< std::endl;
-		} if (this->extensions_list.vk_khr_dynamic_rendering 				!= comparator(this->extensions_list.vk_khr_dynamic_rendering_name)) {
-			std::cout << "Extension VK_KHR_dynamic_rendering is not supported." 				<< std::endl;
-		} if (this->extensions_list.vk_khr_synchronization2 				!= comparator(this->extensions_list.vk_khr_synchronization2_name)) {
-			std::cout << "Extension VK_KHR_synchronization2 is not supported." 					<< std::endl;
-		} if (this->extensions_list.vk_khr_timeline_semaphore 				!= comparator(this->extensions_list.vk_khr_timeline_semaphore_name)) {
-			std::cout << "Extension VK_KHR_timeline_semaphore is not supported." 				<< std::endl;
-		} if (this->extensions_list.vk_khr_copy_commands2 					!= comparator(this->extensions_list.vk_khr_copy_commands2_name)) {
-			std::cout << "Extension VK_KHR_copy_commands2 is not supported." 					<< std::endl;
-		} if (this->extensions_list.vk_ext_extended_dynamic_state 			!= comparator(this->extensions_list.vk_ext_extended_dynamic_state_name)) {
-			std::cout << "Extension VK_EXT_extended_dynamic_state is not supported." 			<< std::endl;
-		} if (this->extensions_list.vk_ext_extended_dynamic_state2 			!= comparator(this->extensions_list.vk_ext_extended_dynamic_state2_name)) {
-			std::cout << "Extension VK_EXT_extended_dynamic_state2 is not supported." 			<< std::endl;
-		}
+		//auto comparator = [extensions](const char* extension) -> bool {
+		//	std::for_each(extensions.begin(), extensions.end(), [extension](const VkExtensionProperties& ext) {
+		//		if (strcmp(extension, ext.extensionName) == 0) {
+		//			return true;
+		//		}
+		//		return false;
+		//	});
+		//};
+//
+		//if (this->extensions_list.vk_ext_descriptor_indexing 				!= comparator(this->extensions_list.vk_ext_descriptor_indexing_name)) {
+		//	std::cout << "Extension VK_EXT_descriptor_indexing is not supported." 				<< std::endl;
+		//} if (this->extensions_list.vk_khr_buffer_device_address 			!= comparator(this->extensions_list.vk_khr_buffer_device_address_name)) {
+		//	std::cout << "Extension VK_KHR_buffer_device_address is not supported." 			<< std::endl;
+		//} if (this->extensions_list.vk_ext_scalar_block_layout 				!= comparator(this->extensions_list.vk_ext_scalar_block_layout_name)) {
+		//	std::cout << "Extension VK_EXT_scalar_block_layout is not supported." 				<< std::endl;
+		//} if (this->extensions_list.vk_khr_uniform_buffer_standard_layout 	!= comparator(this->extensions_list.vk_khr_uniform_buffer_standard_layout_name)) {
+		//	std::cout << "Extension VK_KHR_uniform_buffer_standard_layout is not supported." 	<< std::endl;
+		//} if (this->extensions_list.vk_ext_inline_uniform_block 			!= comparator(this->extensions_list.vk_ext_inline_uniform_block_name)) {
+		//	std::cout << "Extension VK_EXT_inline_uniform_block is not supported." 				<< std::endl;  
+		//} if (this->extensions_list.vk_khr_push_descriptor 					!= comparator(this->extensions_list.vk_khr_push_descriptor_name)) {
+		//	std::cout << "Extension VK_KHR_push_descriptor is not supported." 					<< std::endl;
+		//} if (this->extensions_list.vk_khr_dynamic_rendering 				!= comparator(this->extensions_list.vk_khr_dynamic_rendering_name)) {
+		//	std::cout << "Extension VK_KHR_dynamic_rendering is not supported." 				<< std::endl;
+		//} if (this->extensions_list.vk_khr_synchronization2 				!= comparator(this->extensions_list.vk_khr_synchronization2_name)) {
+		//	std::cout << "Extension VK_KHR_synchronization2 is not supported." 					<< std::endl;
+		//} if (this->extensions_list.vk_khr_timeline_semaphore 				!= comparator(this->extensions_list.vk_khr_timeline_semaphore_name)) {
+		//	std::cout << "Extension VK_KHR_timeline_semaphore is not supported." 				<< std::endl;
+		//} if (this->extensions_list.vk_khr_copy_commands2 					!= comparator(this->extensions_list.vk_khr_copy_commands2_name)) {
+		//	std::cout << "Extension VK_KHR_copy_commands2 is not supported." 					<< std::endl;
+		//} if (this->extensions_list.vk_ext_extended_dynamic_state 			!= comparator(this->extensions_list.vk_ext_extended_dynamic_state_name)) {
+		//	std::cout << "Extension VK_EXT_extended_dynamic_state is not supported." 			<< std::endl;
+		//} if (this->extensions_list.vk_ext_extended_dynamic_state2 			!= comparator(this->extensions_list.vk_ext_extended_dynamic_state2_name)) {
+		//	std::cout << "Extension VK_EXT_extended_dynamic_state2 is not supported." 			<< std::endl;
+		//}
          
     } /* EXTENSIONS AVAILABILITY CHECK */
 }

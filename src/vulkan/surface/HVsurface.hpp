@@ -22,13 +22,12 @@ class HVsurface {
 public:
 	static HVsurface& initialize(HVinstance& instance, Hwindow& window);
 
-// operators
 	static VkSurfaceKHR operator[](uint32_t index) { return surfaces[index]; }
 
 	operator VkSurfaceKHR() const { return surface; }
 
-// key constructors and operators
 	HVsurface(HVsurface&& other) noexcept : instance(other.instance), surface(other.surface) {
+		other.instance = VK_NULL_HANDLE;
 		other.surface = VK_NULL_HANDLE;
 	}
 

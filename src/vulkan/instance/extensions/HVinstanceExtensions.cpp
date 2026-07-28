@@ -2,21 +2,21 @@
 
 HVinstanceExtensions::HVinstanceExtensions(std::initializer_list<const char*> extensions) {
 	
-    auto comparator = [extensions](const char* extension) -> bool {
-		std::for_each(extensions.begin(), extensions.end(), [extension](const char* ext) {
-			if (strcmp(extension, ext) == 0) {
-				return true;
-			}
-		});
-	};
+    //auto comparator = [extensions](const char* extension) -> bool {
+	//	std::for_each(extensions.begin(), extensions.end(), [extension](const char* ext) {
+	//		if (strcmp(extension, ext) == 0) {
+	//			return true;
+	//		}
+	//	});
+	//};
 
-	this->extensions_list = {
-		.vk_khr_surface 		= comparator(this->extensions_list.vk_khr_surface_name),
-		.vk_khr_win32_surface 	= comparator(this->extensions_list.vk_khr_win32_surface_name),
-		.vk_khr_xcb_surface 	= comparator(this->extensions_list.vk_khr_xcb_surface_name),
-		.vk_khr_wayland_surface = comparator(this->extensions_list.vk_khr_wayland_surface_name),
-		.vk_ext_debug_utils 	= comparator(this->extensions_list.vk_ext_debug_utils_name)
-	};
+	//this->extensions_list = {
+	//	.vk_khr_surface 		= comparator(this->extensions_list.vk_khr_surface_name),
+	//	.vk_khr_win32_surface 	= comparator(this->extensions_list.vk_khr_win32_surface_name),
+	//	.vk_khr_xcb_surface 	= comparator(this->extensions_list.vk_khr_xcb_surface_name),
+	//	.vk_khr_wayland_surface = comparator(this->extensions_list.vk_khr_wayland_surface_name),
+	//	.vk_ext_debug_utils 	= comparator(this->extensions_list.vk_ext_debug_utils_name)
+	//};
 
     this->init_extensions();
 }
@@ -41,25 +41,24 @@ void HVinstanceExtensions::init_extensions() {
 
 		auto extensions = available_extensions; 
 
-		auto comparator = [extensions](const char* extension) -> bool {
-			std::for_each(extensions.begin(), extensions.end(), [extension](const char* ext) {
-				if (strcmp(extension, ext) == 0) {
-					return true;
-				}
-			});
-		};
+		//auto comparator = [extensions](const char* extension) -> bool {
+		//	std::for_each(extensions.begin(), extensions.end(), [extension](const VkExtensionProperties& ext) -> bool {
+		//		return strcmp(extension, ext.extensionName) == 0;
+		//			
+		//	});
+		//};
 
-		if (this->extensions_list.vk_khr_surface 			!= comparator(this->extensions_list.vk_khr_surface_name)) {
-			std::cout << "Extension VK_KHR_surface is not supported." 			<< std::endl;
-		} if (this->extensions_list.vk_khr_win32_surface 	!= comparator(this->extensions_list.vk_khr_win32_surface_name)) {
-			std::cout << "Extension VK_KHR_win32_surface is not supported." 	<< std::endl;
-		} if (this->extensions_list.vk_khr_xcb_surface 		!= comparator(this->extensions_list.vk_khr_xcb_surface_name)) {
-			std::cout << "Extension VK_KHR_xcb_surface is not supported." 		<< std::endl;
-		} if (this->extensions_list.vk_khr_wayland_surface 	!= comparator(this->extensions_list.vk_khr_wayland_surface_name)) {
-			std::cout << "Extension VK_KHR_wayland_surface is not supported." 	<< std::endl;
-		} if (this->extensions_list.vk_ext_debug_utils 		!= comparator(this->extensions_list.vk_ext_debug_utils_name)) {
-			std::cout << "Extension VK_EXT_debug_utils is not supported." 		<< std::endl;
-		}
+		//if (this->extensions_list.vk_khr_surface 			!= comparator(this->extensions_list.vk_khr_surface_name)) {
+		//	std::cout << "Extension VK_KHR_surface is not supported." 			<< std::endl;
+		//} if (this->extensions_list.vk_khr_win32_surface 	!= comparator(this->extensions_list.vk_khr_win32_surface_name)) {
+		//	std::cout << "Extension VK_KHR_win32_surface is not supported." 	<< std::endl;
+		//} if (this->extensions_list.vk_khr_xcb_surface 		!= comparator(this->extensions_list.vk_khr_xcb_surface_name)) {
+		//	std::cout << "Extension VK_KHR_xcb_surface is not supported." 		<< std::endl;
+		//} if (this->extensions_list.vk_khr_wayland_surface 	!= comparator(this->extensions_list.vk_khr_wayland_surface_name)) {
+		//	std::cout << "Extension VK_KHR_wayland_surface is not supported." 	<< std::endl;
+		//} if (this->extensions_list.vk_ext_debug_utils 		!= comparator(this->extensions_list.vk_ext_debug_utils_name)) {
+		//	std::cout << "Extension VK_EXT_debug_utils is not supported." 		<< std::endl;
+		//}
          
     } /* EXTENSIONS AVAILABILITY CHECK */
 }

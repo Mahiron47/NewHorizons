@@ -11,8 +11,8 @@ class Hwindow {
 
 	HWND hwnd;
 	HINSTANCE hInstance;
-	LPCSTR className;
-	LPCSTR title;
+	WTEXT className;
+	WTEXT title;
 	uint32_t width;
 	uint32_t height;
 	bool running;
@@ -24,8 +24,8 @@ class Hwindow {
 
 	Hwindow(HWND hwnd, 
 			HINSTANCE hInstance, 
-			LPCSTR className, 
-			LPCSTR title, 
+			WTEXT className, 
+			WTEXT title, 
 			uint32_t width, 
 			uint32_t height) : hwnd(hwnd), 
 							   hInstance(hInstance), 

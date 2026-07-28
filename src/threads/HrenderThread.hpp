@@ -1,5 +1,5 @@
-#ifndef HMAINTHREAD_HPP
-#define HMAINTHREAD_HPP
+#ifndef HRENDERTHREAD_HPP
+#define HRENDERTHREAD_HPP
 
 #include "Horizon.hpp"
 #include "vulkan/instance/HVinstance.hpp"
@@ -7,12 +7,12 @@
 #include "vulkan/phys_device/HVphysicalDevice.hpp"
 #include "vulkan/device/HVdevice.hpp"
 
-class HmainThread {
+class HrenderThread {
 	HVinstance* instance;
 	Hwindow* window;
 	HVsurface* surface;
 
-	HmainThread();
+	HrenderThread();
 
 protected:
 
@@ -25,15 +25,15 @@ protected:
 
 #endif
 public:
-	static HmainThread initialize() {
-		return HmainThread();
+	static HrenderThread initialize() {
+		return HrenderThread();
 	}
 
 	void execute() {
 		window->show();
 		while (window->isRunning()) {
 			window->processMessages();
-			// Здесь можно добавить рендеринг
+			// rendering part
 		}
 	}
 
