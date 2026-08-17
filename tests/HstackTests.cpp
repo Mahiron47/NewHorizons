@@ -66,7 +66,7 @@ TEST_CASE("Hstack::Hstack", "[Hstack]") {
 TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
 
     SECTION("Hstack::push(static value)") {
-    	Hstack<std::size_t, int> stack;
+    	Hstack<size_t, int> stack;
         
         stack.push(10);
         stack.push(20);
@@ -76,7 +76,7 @@ TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
     }
 
     SECTION("Hstack::push(lvalue reference)") {
-        Hstack<std::size_t, int> stack;
+        Hstack<size_t, int> stack;
         int value = 47;
 
         stack.push(value);
@@ -90,10 +90,10 @@ TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
         MoveChecker_copy_count = 0; MoveChecker_move_count = 0;
         MoveChecker_copy_assign_count = 0; MoveChecker_move_assign_count = 0;
 
-        Hstack<std::size_t, MoveChecker> stack;
+        Hstack<size_t, MoveChecker> stack;
         MoveChecker value = MoveChecker(42);
 
-        stack.push(value);
+        stack.push(std::move(value));
 
         REQUIRE(MoveChecker_move_count == 0);
         REQUIRE(MoveChecker_copy_count == 0);
@@ -104,7 +104,7 @@ TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
     }
 
     SECTION("Hstack::last : empty stack throws std::out_of_range") {
-        Hstack<std::size_t, std::string> stack;
+        Hstack<size_t, std::string> stack;
 
 		REQUIRE_THROWS_AS(stack.last(), std::out_of_range);
 	}
@@ -112,8 +112,8 @@ TEST_CASE("Hstack::push, Hstack::last", "[Hstack]") {
 
 TEST_CASE("Hstack::pop", "[Hstack]") {
 
-    SECTION("Hstack::pop(lvalue reference)") {
-        Hstack<std::size_t, int> stack;
+    SECTION("Hstack::pop(simple check)") {
+        Hstack<size_t, int> stack;
 
         stack.push(100);
         stack.push(200);
@@ -132,7 +132,7 @@ TEST_CASE("Hstack::pop", "[Hstack]") {
     }
 
     SECTION("Hstack::pop : empty stack throws std::out_of_range") {
-        Hstack<std::size_t, int> stack;
+        Hstack<size_t, int> stack;
 
         REQUIRE_THROWS_AS(stack.pop(), std::out_of_range);
     }
@@ -142,12 +142,12 @@ TEST_CASE("Hstack::pop", "[Hstack]") {
         MoveChecker_copy_count = 0; MoveChecker_move_count = 0;
         MoveChecker_copy_assign_count = 0; MoveChecker_move_assign_count = 0;
 
-        Hstack<std::size_t, MoveChecker> stack;
+        Hstack<size_t, MoveChecker> stack;
         MoveChecker value1 = MoveChecker(42);
         MoveChecker value2 = MoveChecker(47);
         
-        stack.push(value1);
-        stack.push(value2);
+        stack.push(std::move(value1));
+        stack.push(std::move(value2));
         
         MoveChecker& result2 = stack.pop();
         MoveChecker& result1 = stack.pop();
@@ -163,7 +163,7 @@ TEST_CASE("Hstack::pop", "[Hstack]") {
     }
 
     SECTION("Hstack::pop, Hstack::last : returns mutable reference to top") {
-        Hstack<std::size_t, int> stack;
+        Hstack<size_t, int> stack;
 
 		stack.push(1);
 		stack.push(2);
@@ -176,7 +176,7 @@ TEST_CASE("Hstack::pop", "[Hstack]") {
 }
 
 TEST_CASE("Hstack::operator[]", "[Hstack]") {
-	Hstack<std::size_t, int> stack;
+	Hstack<size_t, int> stack;
 
 	stack.push(3);
 	stack.push(6);
@@ -188,7 +188,7 @@ TEST_CASE("Hstack::operator[]", "[Hstack]") {
 	REQUIRE_THROWS_AS(stack[3], std::out_of_range);
 
 	SECTION("Hstack::operator[] : handles mutable access with rvalue objects") {
-		Hstack<std::size_t, std::string> rvalue_stack;
+		Hstack<size_t, std::string> rvalue_stack;
 		
 		rvalue_stack.push("initial_1");
 		rvalue_stack.push("initial_2");
@@ -202,7 +202,7 @@ TEST_CASE("Hstack::operator[]", "[Hstack]") {
 }
 
 TEST_CASE("Hstack::clear", "[Hstack]") {
-	Hstack<std::size_t, int> stack;
+	Hstack<size_t, int> stack;
 
 	stack.push(7);
 	stack.push(8);
@@ -218,7 +218,7 @@ TEST_CASE("Hstack::clear", "[Hstack]") {
 }
 
 TEST_CASE("Hstack::del", "[Hstack]") {
-	Hstack<std::size_t, int> stack;
+	Hstack<size_t, int> stack;
 
 	stack.push(11);
 	stack.push(12);
@@ -235,7 +235,7 @@ TEST_CASE("Hstack::del", "[Hstack]") {
 }
 
 TEST_CASE("Hstack::push, Hstack::pop : handles large sequence", "[Hstack]") {
-	Hstack<std::size_t, int> stack;
+	Hstack<size_t, int> stack;
 	constexpr int count = 1000;
 
 	for (int i = 0; i < count; ++i) {
@@ -247,7 +247,7 @@ TEST_CASE("Hstack::push, Hstack::pop : handles large sequence", "[Hstack]") {
 	}
 
 	SECTION("Hstack::push(rvalue), Hstack::pop : handles large sequence of strings") {
-		Hstack<std::size_t, std::string> rvalue_stack;
+		Hstack<size_t, std::string> rvalue_stack;
 		constexpr int rvalue_count = 100;
 		
 		for (int i = 0; i < rvalue_count; ++i) {
@@ -263,7 +263,7 @@ TEST_CASE("Hstack::push, Hstack::pop : handles large sequence", "[Hstack]") {
 TEST_CASE("Hstack::do_each", "[Hstack]") {
     
     SECTION("Hstack::do_each : modifies values") {
-        Hstack<std::size_t, int> stack;
+        Hstack<size_t, int> stack;
 
         stack.push(1);
         stack.push(2);
@@ -281,7 +281,7 @@ TEST_CASE("Hstack::do_each", "[Hstack]") {
     }
 
     SECTION("Hstack::do_each : finds value") {
-        Hstack<std::size_t, std::string> stack;
+        Hstack<size_t, std::string> stack;
 
         stack.push("apple");
         stack.push("banana");
@@ -292,14 +292,14 @@ TEST_CASE("Hstack::do_each", "[Hstack]") {
             return value == "banana";
         };
 
-        stack.do_each(find_banana, found_value);
+        stack.do_each(find_banana, &found_value);
 
         REQUIRE(found_value != nullptr);
         REQUIRE(*found_value == "banana");
     }
 
     SECTION("Hstack::do_each : processes rvalue objects with transformation") {
-        Hstack<std::size_t, std::string> stack;
+        Hstack<size_t, std::string> stack;
         
         stack.push("a");
         stack.push("b");

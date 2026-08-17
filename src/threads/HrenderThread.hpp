@@ -1,5 +1,5 @@
-#ifndef HRENDERTHREAD_HPP
-#define HRENDERTHREAD_HPP
+#ifndef HRENDERTHREADHPP
+#define HRENDERTHREADHPP
 
 #include "Horizon.hpp"
 #include "vulkan/instance/HVinstance.hpp"
@@ -31,8 +31,8 @@ public:
 
 	void execute() {
 		window->show();
-		while (window->isRunning()) {
-			window->processMessages();
+		while (window->is_running()) {
+			window->process_messages();
 			// rendering part
 		}
 	}
@@ -47,4 +47,4 @@ VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
 #endif
 */
 
-#endif // HMAINTHREAD_HPP
+#endif // HRENDERTHREADHPP

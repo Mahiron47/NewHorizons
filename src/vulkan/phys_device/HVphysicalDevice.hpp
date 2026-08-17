@@ -1,5 +1,5 @@
-#ifndef HV_PHYSICALDEVICE_HPP
-#define HV_PHYSICALDEVICE_HPP
+#ifndef HVPHYSICALDEVICEHPP
+#define HVPHYSICALDEVICEHPP
 
 #include "memory/Hstack.hpp"
 #include "vulkan/instance/HVinstance.hpp"
@@ -8,38 +8,36 @@
 #include <vulkan/vulkan.hpp>
 
 class HVphysicalDevice {
-	static Hstack<uint32_t, HVphysicalDevice> physicalDevices;
+	Hstack<uint32_t, VkPhysicalDevice> _physical_devices;
 
-	VkPhysicalDevice physicalDevice;
-
-	HVphysicalDevice(VkPhysicalDevice physicalDevice) : physicalDevice(physicalDevice) {}
+	HVphysicalDevice(Hstack<uint32_t, VkPhysicalDevice>&& physical_devices) : _physical_devices(physical_devices) {}
 
 public:
-	static Hstack<uint32_t, HVphysicalDevice>& initialize(const HVinstance& instance);
+	static HVphysicalDevice* initialize(const HVinstance* instance);
 	
-	static VkPhysicalDevice pickDevice(HphysicalDeviceType&& type);
+	VkPhysicalDevice pickDevice(const HphysicalDeviceType& type);
 
-	static VkPhysicalDevice operator[](uint32_t index) { return physicalDevices[index]; }
-	operator VkPhysicalDevice() const { return physicalDevice; }
+	operator Hstack<uint32_t, VkPhysicalDevice>() const { return _physical_devices; }
 
-	HVphysicalDevice() : physicalDevice(VK_NULL_HANDLE) {}
+	HVphysicalDevice() : _physical_devices() {}
    ~HVphysicalDevice() = default;
 
-	HVphysicalDevice(HVphysicalDevice&& other) noexcept : physicalDevice(other.physicalDevice) {
-		other.physicalDevice = VK_NULL_HANDLE;
-	}
-	HVphysicalDevice& operator=(HVphysicalDevice&& other) noexcept {
-		if (this != &other) {
-			this->physicalDevice = other.physicalDevice;
-			other.physicalDevice = VK_NULL_HANDLE;
-		}
+	HVphysicalDevice(HVphysicalDevice&& other) noexcept : _physical_devices(other._physical_devices) {
+		other._physical_devices = Hstack<uint32_t, VkPhysicalDevice>();
+    }
+    HVphysicalDevice& operator=(HVphysicalDevice&& other) noexcept {
+        if (this != &other) return *this;
 
-		return *this;
-	}
+        this->_physical_devices = other._physical_devices;
 
-	HVphysicalDevice(const HVphysicalDevice&) = delete;
+        other._physical_devices = Hstack<uint32_t, VkPhysicalDevice>();
+
+        return *this;
+    }
+
+    HVphysicalDevice(const HVphysicalDevice&) = delete;
 	HVphysicalDevice& operator=(const HVphysicalDevice&) = delete;
 
 };
 
-#endif // HV_PHYSICALDEVICE_HPP
+#endif // HVPHYSICALDEVICEHPP

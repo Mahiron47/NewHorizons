@@ -5,134 +5,131 @@
 #include "concepts/Arithmetic.hpp"
 
 template<ArithmeticComparable SizeType, typename ValueType> class Hstack {
-	SizeType point;
-	SizeType sz;
-	ValueType* data;
+	SizeType   _pt;
+	SizeType   _sz;
+	ValueType* _dt;
 
-	void extend_size() {
-		if (this->data == nullptr) {
-			this->sz = 1;
-			this->data = new ValueType[this->sz];
-			return;
-		}
-
-		SizeType new_size = this->sz * 2;
-		ValueType* new_data = new ValueType[new_size];
-		
-		for (SizeType i = 0; i < this->sz; i++) {
-			new_data[i] = static_cast<ValueType&&>(this->data[i]);
-		}
-		delete[] this->data;
-		this->data = new_data;
-		this->sz = new_size;
-	}
-
-	void reduce_size() {
-		if (this->data == nullptr || this->sz == 1) {
-			return;
-		}
-
-		SizeType new_size = this->sz / 2;
-		ValueType* new_data = new ValueType[new_size];
-		
-		for (SizeType i = 0; i < new_size; i++) {
-			new_data[i] = static_cast<ValueType&&>(this->data[i]);
-		}
-		delete[] this->data;
-		this->data = new_data;
-		this->sz = new_size;
-	}
+	void extend_size();
+	void reduce_size();
 
 public:
-	Hstack() : point(0), sz(0), data(nullptr) {}
-	Hstack(const SizeType& sz) : point(0), sz(sz), data(new ValueType[sz]) {}
-	Hstack(const Hstack& other) : point(other.point), sz(other.sz), data(new ValueType[other.sz]) {
-		for (SizeType i = 0; i < other.point; i++) {
-			data[i] = other.data[i];
-		}
+    Hstack() : _pt(0),
+               _sz(0),
+               _dt(nullptr) {}
+    Hstack(SizeType sz) : _pt(sz),
+                          _sz(sz),
+                          _dt(new ValueType[sz]) {
+        for (SizeType i = 0; i < this->size(); i++) {
+            _dt[i] = ValueType();
+        }
+    }
+    template<typename... Args> requires (std::convertible_to<Args, ValueType> && ...)
+	Hstack(Args&&... values) : _pt(sizeof...(values)), 
+							   _sz(sizeof...(values)), 
+							   _dt(new ValueType[sizeof...(values)]) {
+		uint32_t index = 0;
+		
+		((this->_dt[index++] = ValueType(std::forward<ValueType>(values))), ...);
 	}
-	Hstack(Hstack&& other) noexcept : point(other.point), sz(other.sz), data(&other.data) {
-		other.point = 0;
-		other.sz = 0;
-		other.data = nullptr;
+   ~Hstack() { 
+		delete[] _dt; 
 	}
-	template<typename... Args> requires (std::convertible_to<Args, ValueType> && ...)
-	Hstack(Args&&... values) : point(sizeof...(values)), sz(sizeof...(values)), 
-									   data(new ValueType[sizeof...(values)] {values...}) {}
-	~Hstack() { delete[] data; }
+
+    Hstack(const Hstack& other) : _pt(other._pt),
+                                  _sz(other._sz),
+                                  _dt(new ValueType[other._sz]) {
+        for (SizeType i = 0; i < this->size(); i++) {
+            _dt[i] = ValueType(std::forward<ValueType>(other._dt[i]));
+        }
+    }
+    Hstack(Hstack&& other) noexcept : _pt(other._pt),
+                                      _sz(other._sz),
+                                      _dt(other._dt) {
+        other._pt = 0;
+		other._sz = 0;
+		other._dt = nullptr;
+    }
+
 	Hstack& operator=(const Hstack& other) {
-		this->point = other.point;
-		this->sz = other.sz;
-		this->data = new ValueType[other.sz];
-		for (SizeType i = 0; i < this->sz; i++) {
-			this->data[i] = other.data[i];
+		if (this == &other) return *this;
+
+		this->_pt = other._pt;
+		this->_sz = other._sz;
+		this->_dt = new ValueType[other._sz];
+
+		for (SizeType i = 0; i < this->size(); i++) {
+			_dt[i] = std::forward<ValueType>(other._dt[i]);
 		}
 
 		return *this;
 	}
 	Hstack& operator=(Hstack&& other) {
-		this->point = other.point;
-		this->sz = other.sz;
-		this->data = other.data;
-		other.data = nullptr;
+		if (this == &other) return *this;
+
+		this->_pt = other._pt;
+		this->_sz = other._sz;
+		this->_dt = other._dt;
+
+		other._pt = 0;
+		other._sz = 0;
+		other._dt = nullptr;
 
 		return *this;
 	}
 
 	template<typename T> requires std::convertible_to<T, ValueType>
 	void push(T&& value) {
-        if (this->point == this->sz) {
-            this->extend_size();
-        }
-        this->data[this->point++] = static_cast<ValueType&&>(value);
-    }
+        if (_pt == _sz) this->extend_size();
+        
+        _dt[_pt++] = std::forward<T>(value);	
+	}
 
 	ValueType& pop() {
-		if (this->point == 0) {
-			throw std::out_of_range("Hstack::pop");
-		} if (this->point > 0 && this->point == this->sz / 4) {
-			this->reduce_size();
-		}
+		if (_pt == 0) throw std::out_of_range("Hstack::pop");
 		
-		return this->data[--this->point];
+		while (_pt <= _sz / 4 && _sz > 1) this->reduce_size();
+
+		_pt--;
+
+		return _dt[_pt];
 	}
 
 	ValueType& last() {
-		if (this->point == 0) {
-			throw std::out_of_range("Hstack::last");
-		}
-		return this->data[this->point - 1];
+		if (_pt <= 0) throw std::out_of_range("Hstack::last");
+		
+		return _dt[_pt - 1];
 	}
 
 	SizeType size() const {
-		return this->sz;
+		return _pt;
 	}
 
 	void del() {
-		delete[] this->data;
-		this->data = nullptr;
-		this->sz = 0;
-		this->point = 0;
+		delete[] _dt;
+
+		_pt = 0;
+		_sz = 0;
+		_dt = nullptr;
 	}
 
 	void clear() {
-		this->point = 0;
+		_pt = 0;
 	}
 
 	template<typename Func, typename... Args> requires requires(Func f, ValueType v, Args... args) {
     	{ f(v, args...) } -> std::convertible_to<void>;
 	} void do_each(Func&& func, Args&&... args) {
-		for (SizeType i = 0; i < this->point; i++) {
-			func(this->data[i], args...);
+		for (SizeType i = 0; i < this->size(); i++) {
+			func(this->_dt[i], std::forward<Args>(args)... );
 		}
 	}
 
 	template<typename Func, typename... Args> requires requires(Func f, ValueType v, Args... args) {
     	{ f(v, args...) } -> std::convertible_to<bool>;
-	} void do_each(Func&& func, ValueType* value, Args&&... args) {
-		for (SizeType i = 0; i < this->point; i++) { 
-			if (func(this->data[i], args...)) { 
-				value = &this->data[i];
+	} void do_each(Func&& func, ValueType** value, Args&&... args) {
+		for (SizeType i = 0; i < this->size(); i++) { 
+			if (func(this->_dt[i], std::forward<Args>(args)... )) { 
+				*value = &this->_dt[i];
 			}
 		}
 	}
@@ -140,20 +137,64 @@ public:
 	template<typename Func, typename... Args> requires requires(Func f, ValueType v, Args... args) {
     	{ f(v, args...) } -> std::convertible_to<bool>;
 	} ValueType* do_each(Func&& func, Args&&... args) {
-		for (SizeType i = 0; i < this->point; i++) { 
-			if (func(this->data[i], args...)) { 
-				return &this->data[i];
+		for (SizeType i = 0; i < this->size(); i++) { 
+			if (func(this->_dt[i], std::forward<Args>(args)... )) { 
+				return &this->_dt[i];
 			}
 		}
 		return nullptr;
 	}
 
-	ValueType& operator[](const SizeType& index) const {
-		if (index >= this->point) {
-			throw std::out_of_range("Hstack::operator[]");
-		}
-		return this->data[index];
+	ValueType& operator[](SizeType index) {
+		if (index >= _pt) throw std::out_of_range("Hstack::operator[]");
+		
+		return _dt[index];
+	}
+
+	const ValueType& operator[](SizeType index) const {
+		if (index >= _pt) throw std::out_of_range("Hstack::operator[]");
+
+		return _dt[index];
 	}
 };
+
+template<ArithmeticComparable SizeType, typename ValueType>
+inline void Hstack<SizeType, ValueType>::extend_size() {
+    if (_dt == nullptr) {
+		_pt = 0;
+        _sz = 1;
+        _dt = new ValueType[_sz];
+        return;
+    }
+
+    SizeType new_sz = _sz * 2;
+    ValueType* new_data = new ValueType[new_sz];
+
+    for (SizeType i = 0; i < this->size(); i++) {
+        new_data[i] = std::forward<ValueType>(_dt[i]);
+    }
+
+	delete[] _dt;
+
+    _dt = new_data;
+    _sz = new_sz;
+}
+
+template<ArithmeticComparable SizeType, typename ValueType>
+inline void Hstack<SizeType, ValueType>::reduce_size() {
+    if (_sz <= 1) return;
+
+    SizeType new_sz = _sz / 2;
+    ValueType* new_data = new ValueType[new_sz];
+
+    for (SizeType i = 0; i < this->size(); i++) {
+        new_data[i] = std::forward<ValueType>(_dt[i]);
+    }
+
+    delete[] _dt;
+
+    _dt = new_data;
+    _sz = new_sz;
+}
 
 #endif // HVSTACKHPP

@@ -1,41 +1,120 @@
-#ifndef HV_INSTANCE_EXTENSIONS_HPP
-#define HV_INSTANCE_EXTENSIONS_HPP
+#ifndef HVINSTANCEEXTENSIONSHPP
+#define HVINSTANCEEXTENSIONSHPP
 
+#include "vulkan/interfaces/IHVmodules.hpp"
 #include "memory/Hstack.hpp"
-#include "Horizon.hpp"
 
 #include <vulkan/vulkan.hpp>
-#include <initializer_list>
-#include <vector>
 
-struct sHVinstanceExtensions {
-	// 1 group
-	bool vk_khr_surface;
-	const char* vk_khr_surface_name 		= "VK_KHR_surface";
-	bool vk_khr_win32_surface;
-	const char* vk_khr_win32_surface_name 	= "VK_KHR_win32_surface";
-	bool vk_khr_xcb_surface;
-	const char* vk_khr_xcb_surface_name 	= "VK_KHR_xcb_surface";
-	bool vk_khr_wayland_surface;
-	const char* vk_khr_wayland_surface_name = "VK_KHR_wayland_surface";
-	bool vk_ext_debug_utils;
-	const char* vk_ext_debug_utils_name 	= "VK_EXT_debug_utils";
+class HVextensionKHRsurface : public IHVmodule {
+public:
+    const char* get_module_name() const override {
+        return VK_KHR_SURFACE_EXTENSION_NAME;
+    }
+    IHVmodule* initialize() const override {
+        return new HVextensionKHRsurface();
+    }
 
 };
 
-class HVinstanceExtensions {
-	sHVinstanceExtensions extensions_list;
+#ifdef VK_USE_PLATFORM_WIN32_KHR
 
+class HVextensionKHRWIN32surface : public IHVmodule {
+public:
+    const char* get_module_name() const override {
+        return VK_KHR_WIN32_SURFACE_EXTENSION_NAME;
+    }
+    IHVmodule* initialize() const override {
+        return new HVextensionKHRWIN32surface();
+    }
 
-	void init_extensions();
+};
+
+#endif
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+
+class HVextensionKHRXCBsurface : public IHVmodule {
+public:
+    const char* get_module_name() const override {
+		return VK_KHR_XCB_SURFACE_EXTENSION_NAME;
+    }
+    IHVmodule* initialize() const override {
+		return new HVextensionKHRXCBsurface();
+    }
+
+};
+
+#endif
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+
+class HVextensionKHRwaylandSurface : public IHVmodule {
+public:
+	const char* get_module_name() const override {
+		return VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME;
+	}
+    IHVmodule* initialize() const override {
+        return new HVextensionKHRwaylandSurface();
+    }
+
+};
+
+#endif
+
+class HVextensionEXTdebugUtils : public IHVmodule {
+public:
+	const char* get_module_name() const override {
+		return VK_EXT_DEBUG_UTILS_EXTENSION_NAME;
+	}
+    IHVmodule* initialize() const override {
+        return new HVextensionEXTdebugUtils();
+    }
+
+};
+
+class HVinstanceExtensions : public IHVmodules {
+	void init_modules_list() override;
 	
 public:
-	HVinstanceExtensions(std::initializer_list<const char*> extensions);
-
-	HVinstanceExtensions(const HVinstanceExtensions&);
-
-
+    template<class... Args> requires (std::derived_from<std::remove_reference_t<Args>, IHVmodule> && ...)
+    HVinstanceExtensions(Args&&... args) : IHVmodules(std::forward<Args>(args)...) {
+        this->initialize();
+    }
 
 };
 
-#endif /* HV_INSTANCE_EXTENSIONS_HPP */
+inline void HVinstanceExtensions::init_modules_list() {
+    VkResult result;
+
+    uint32_t extensions_count;
+    
+    result = vkEnumerateInstanceExtensionProperties(nullptr, &extensions_count, nullptr);
+
+    if (result != VK_SUCCESS) throw std::runtime_error("HVinstanceExtensions::init_modules_list : Failed to enumerate instance extension properties!");
+    
+
+    VkExtensionProperties* extension_properties = new VkExtensionProperties[extensions_count];
+
+    result = vkEnumerateInstanceExtensionProperties(nullptr, &extensions_count, extension_properties);
+
+    if (result != VK_SUCCESS) throw std::runtime_error("HVinstanceExtensions::init_modules_list : Failed to enumerate instance extension properties!");
+    
+
+    this->_modules_list.do_each([](IHVmodule*& val,
+                                     uint32_t extension_count,
+                                     VkExtensionProperties* extension_properties) -> void {
+        for (uint32_t i = 0; i < extension_count; i++) {
+            if (strcmp(val->get_module_name(), extension_properties[i].extensionName) == 0) {
+                val->set_accesability(true);
+                return;
+            }
+        }
+        throw std::runtime_error("HVinstanceExtensions::init_modules_list : instance extension " +
+                                 string(val->get_module_name()) + " is not supported.");
+    }, extensions_count, extension_properties);
+
+    delete[] extension_properties;
+}
+
+#endif /* HVINSTANCEEXTENSIONSHPP */

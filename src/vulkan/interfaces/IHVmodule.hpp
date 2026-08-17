@@ -3,19 +3,18 @@
 
 #include "Horizon.hpp"
 
-struct IHVinstanceLayersPtr;
-
 interface IHVmodule {
     bool val_accesability = false;
+
 public:
-    virtual bool get_accesability() const {
+    bool get_accesability() const {
         return val_accesability;
     }
-    virtual void set_accesability(bool val) {
+    void set_accesability(bool val) {
         val_accesability = val;
     }
-    virtual IHVinstanceLayersPtr&& initialize() const = 0;
-
+    virtual const char* get_module_name() const = 0;
+    virtual IHVmodule* initialize() const = 0;
 };
 
 #endif // IHVMODULEHPP

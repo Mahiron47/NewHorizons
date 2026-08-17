@@ -15,10 +15,7 @@ add_executable(Horizons src/main.cpp
     					src/threads/HrenderThread.cpp
     					src/vulkan/surface/HVsurface.cpp
     					src/vulkan/instance/HVinstance.cpp
-    					src/vulkan/instance/extensions/HVinstanceExtensions.cpp
     					src/vulkan/device/HVdevice.cpp
-						src/vulkan/device/extensions/HVdeviceExtensions.cpp
-						src/vulkan/device/layers/HVdeviceLayers.cpp
 						src/Horizon.cpp
 )
 
@@ -33,6 +30,7 @@ target_link_libraries(Horizons PUBLIC Vulkan::Vulkan)
 
 # Link CTests
 include(CTest)
+
 enable_testing()
 
 # Unit tests

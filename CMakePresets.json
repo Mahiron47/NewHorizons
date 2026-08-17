@@ -2,16 +2,54 @@
 	"version": 8,
 	"configurePresets": [
 		{
-			"name": "horizons",
-			"displayName": "GCC",
-			"description": "Using compilers: C = C:\\msys64\\ucrt64\\bin\\gcc.exe, CXX = C:\\msys64\\ucrt64\\bin\\g++.exe",
+			"name": "horizons-base",
+			"hidden": true,
 			"generator": "Ninja",
-			"binaryDir": "${sourceDir}/out/build/horizons",
 			"cacheVariables": {
 				"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/horizons",
 				"CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
 				"CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
 				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "horizons",
+			"displayName": "GCC",
+			"description": "Using compilers: C = C:\\msys64\\ucrt64\\bin\\gcc.exe, CXX = C:\\msys64\\ucrt64\\bin\\g++.exe",
+			"inherits": "horizons-base",
+			"binaryDir": "${sourceDir}/out/build/horizons",
+			"cacheVariables": {
+				"NH_TEST_SUITE": "ALL"
+			}
+		},
+		{
+			"name": "horizons-memory",
+			"displayName": "GCC Tests: memory",
+			"description": "Memory-only tests in dedicated build directory",
+			"inherits": "horizons-base",
+			"binaryDir": "${sourceDir}/out/build/horizons-memory",
+			"cacheVariables": {
+				"NH_TEST_SUITE": "MEMORY"
+			}
+		},
+		{
+			"name": "horizons-vulkan-instance",
+			"displayName": "GCC Tests: vulkan/instance",
+			"description": "Vulkan instance tests in dedicated build directory",
+			"inherits": "horizons-base",
+			"binaryDir": "${sourceDir}/out/build/horizons-vulkan-instance",
+			"cacheVariables": {
+				"NH_TEST_SUITE": "VULKAN_INSTANCE"
+			}
+		},
+		{
+			"name": "horizons-vulkan-phys-device",
+			"displayName": "GCC Tests: vulkan/phys_device",
+			"description": "Vulkan physical device tests in dedicated build directory",
+			"inherits": "horizons-base",
+			"binaryDir": "${sourceDir}/out/build/horizons-vulkan-phys-device",
+			"cacheVariables": {
+				"NH_TEST_SUITE": "VULKAN_PHYS_DEVICE"
 			}
 		}
 	],
@@ -21,6 +59,61 @@
 			"description": "",
 			"displayName": "Horizons Tests",
 			"configurePreset": "horizons"
+		},
+		{
+			"name": "Horizons Tests: memory",
+			"displayName": "Horizons Tests: memory",
+			"configurePreset": "horizons-memory"
+		},
+		{
+			"name": "Horizons Tests: vulkan/instance",
+			"displayName": "Horizons Tests: vulkan/instance",
+			"configurePreset": "horizons-vulkan-instance"
+		},
+		{
+			"name": "Horizons Tests: vulkan/phys_device",
+			"displayName": "Horizons Tests: vulkan/phys_device",
+			"configurePreset": "horizons-vulkan-phys-device"
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "horizons-build-all-tests",
+			"displayName": "Build: all tests (single build dir)",
+			"description": "Build all test targets in horizons preset",
+			"configurePreset": "horizons",
+			"targets": [
+				"tests_memory",
+				"tests_vulkan_instance",
+				"tests_vulkan_phys_device"
+			]
+		},
+		{
+			"name": "horizons-build-memory",
+			"displayName": "Build: memory tests node",
+			"description": "Build tests for memory node",
+			"configurePreset": "horizons-memory",
+			"targets": [
+				"tests_memory"
+			]
+		},
+		{
+			"name": "horizons-build-vulkan-instance",
+			"displayName": "Build: vulkan/instance tests node",
+			"description": "Build tests for vulkan/instance node",
+			"configurePreset": "horizons-vulkan-instance",
+			"targets": [
+				"tests_vulkan_instance"
+			]
+		},
+		{
+			"name": "horizons-build-vulkan-phys-device",
+			"displayName": "Build: vulkan/phys_device tests node",
+			"description": "Build tests for vulkan/phys_device node",
+			"configurePreset": "horizons-vulkan-phys-device",
+			"targets": [
+				"tests_vulkan_phys_device"
+			]
 		}
 	]
 }

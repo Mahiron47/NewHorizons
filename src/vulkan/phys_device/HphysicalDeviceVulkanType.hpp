@@ -1,66 +1,60 @@
 #ifndef HORIZONS_HPHYSICALDEVICEVULKANTYPE_HPP
 #define HORIZONS_HPHYSICALDEVICEVULKANTYPE_HPP
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wnarrowing"
 
-#include "memory/Hstack.hpp"
 #include "vulkan/instance/HVinstance.hpp"
+#include "memory/Hstack.hpp"
 
 #include <vulkan/vulkan.hpp>
 
-enum class eHphysicalDeviceVulkanSupportType {
+enum class EHphysicalDeviceVulkanSupportType {
 	VK_VER_1_0 = 0b000'000,
 	VK_VER_1_1 = 0b001'000,
 	VK_VER_1_2 = 0b010'000,
 	VK_VER_1_3 = 0b011'000,
 	VK_VER_1_4 = 0b100'000
 };
-
-enum class eHphysicalDeviceEfficiencyType {
+enum class EHphysicalDeviceEfficiencyType {
 	BEST_PERFORMANCE      = 0b01,
 	BEST_POWER_EFFICIENCY = 0b10,
 };
 
-inline eHphysicalDeviceVulkanSupportType operator|(eHphysicalDeviceVulkanSupportType lhs, eHphysicalDeviceVulkanSupportType rhs) {
-	return eHphysicalDeviceVulkanSupportType(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+inline EHphysicalDeviceVulkanSupportType operator|(EHphysicalDeviceVulkanSupportType lhs, EHphysicalDeviceVulkanSupportType rhs) {
+	return EHphysicalDeviceVulkanSupportType(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
 }
-
-inline eHphysicalDeviceEfficiencyType operator|(eHphysicalDeviceEfficiencyType lhs, eHphysicalDeviceEfficiencyType rhs) {
-	return eHphysicalDeviceEfficiencyType(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+inline EHphysicalDeviceEfficiencyType operator|(EHphysicalDeviceEfficiencyType lhs, EHphysicalDeviceEfficiencyType rhs) {
+	return EHphysicalDeviceEfficiencyType(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
 }
-
-inline uint32_t operator|(eHphysicalDeviceVulkanSupportType lhs, eHphysicalDeviceEfficiencyType rhs) {
+inline uint32_t operator|(EHphysicalDeviceVulkanSupportType lhs, EHphysicalDeviceEfficiencyType rhs) {
+	return static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs);
+}
+inline uint32_t operator|(EHphysicalDeviceEfficiencyType lhs, EHphysicalDeviceVulkanSupportType rhs) {
 	return static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs);
 }
 
-inline uint32_t operator|(eHphysicalDeviceEfficiencyType lhs, eHphysicalDeviceVulkanSupportType rhs) {
-	return static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs);
-}
-
-template<typename eHphysicalDeviceVulkanType> requires requires(eHphysicalDeviceVulkanType T) {
-	{ ((uint32_t) T) } -> std::convertible_to<uint32_t>;
-} class HphysicalDeviceVulkanType {
+template<typename EHphysicalDeviceVulkanType> requires requires(EHphysicalDeviceVulkanType t) {
+	{ ( (uint32_t) t ) } -> std::convertible_to<uint32_t>;
+} interface HphysicalDeviceVulkanType {
 protected:
-	const eHphysicalDeviceVulkanType type;
+	const EHphysicalDeviceVulkanType _type;
 
 public:
-	HphysicalDeviceVulkanType(eHphysicalDeviceVulkanType type) : type(type) {}
+	HphysicalDeviceVulkanType(EHphysicalDeviceVulkanType type) : _type(type) {}
 
 	virtual bool isSuitable(VkPhysicalDevice device) const = 0;
 };
 
-class HphysicalDeviceEfficiencyType : protected HphysicalDeviceVulkanType<eHphysicalDeviceEfficiencyType> {
+class HphysicalDeviceEfficiencyType : protected HphysicalDeviceVulkanType<EHphysicalDeviceEfficiencyType> {
 public:
-	HphysicalDeviceEfficiencyType(eHphysicalDeviceEfficiencyType type) : HphysicalDeviceVulkanType<eHphysicalDeviceEfficiencyType>(type) {}
+	HphysicalDeviceEfficiencyType(EHphysicalDeviceEfficiencyType type) : HphysicalDeviceVulkanType<EHphysicalDeviceEfficiencyType>(type) {}
 
     bool isSuitable(VkPhysicalDevice device) const {
         VkPhysicalDeviceProperties properties;
         vkGetPhysicalDeviceProperties(device, &properties);
 
-        switch (this->type) { 
-        case eHphysicalDeviceEfficiencyType::BEST_PERFORMANCE:
+        switch (this->_type) { 
+        case EHphysicalDeviceEfficiencyType::BEST_PERFORMANCE:
             return properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
-        case eHphysicalDeviceEfficiencyType::BEST_POWER_EFFICIENCY:
+        case EHphysicalDeviceEfficiencyType::BEST_POWER_EFFICIENCY:
             return properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
         };
 
@@ -68,24 +62,24 @@ public:
     }
 };
 
-class HphysicalDeviceVulkanSupportType : protected HphysicalDeviceVulkanType<eHphysicalDeviceVulkanSupportType> {
+class HphysicalDeviceVulkanSupportType : protected HphysicalDeviceVulkanType<EHphysicalDeviceVulkanSupportType> {
 public:
-	HphysicalDeviceVulkanSupportType(eHphysicalDeviceVulkanSupportType type) : HphysicalDeviceVulkanType<eHphysicalDeviceVulkanSupportType>(type) {}
+	HphysicalDeviceVulkanSupportType(EHphysicalDeviceVulkanSupportType type) : HphysicalDeviceVulkanType<EHphysicalDeviceVulkanSupportType>(type) {}
 
     bool isSuitable(VkPhysicalDevice device) const {
         VkPhysicalDeviceProperties properties;
         vkGetPhysicalDeviceProperties(device, &properties);
 
-        switch (this->type) { 
-		case eHphysicalDeviceVulkanSupportType::VK_VER_1_0: 
+        switch (this->_type) { 
+		case EHphysicalDeviceVulkanSupportType::VK_VER_1_0: 
             return VK_VERSION_MAJOR(properties.apiVersion) >= 1 && VK_VERSION_MINOR(properties.apiVersion) >= 0;
-        case eHphysicalDeviceVulkanSupportType::VK_VER_1_1: 
+        case EHphysicalDeviceVulkanSupportType::VK_VER_1_1: 
             return VK_VERSION_MAJOR(properties.apiVersion) >= 1 && VK_VERSION_MINOR(properties.apiVersion) >= 1;
-        case eHphysicalDeviceVulkanSupportType::VK_VER_1_2:
+        case EHphysicalDeviceVulkanSupportType::VK_VER_1_2:
             return VK_VERSION_MAJOR(properties.apiVersion) >= 1 && VK_VERSION_MINOR(properties.apiVersion) >= 2;
-        case eHphysicalDeviceVulkanSupportType::VK_VER_1_3:
+        case EHphysicalDeviceVulkanSupportType::VK_VER_1_3:
             return VK_VERSION_MAJOR(properties.apiVersion) >= 1 && VK_VERSION_MINOR(properties.apiVersion) >= 3;
-        case eHphysicalDeviceVulkanSupportType::VK_VER_1_4:
+        case EHphysicalDeviceVulkanSupportType::VK_VER_1_4:
             return VK_VERSION_MAJOR(properties.apiVersion) >= 1 && VK_VERSION_MINOR(properties.apiVersion) >= 4;
         };
 
@@ -93,13 +87,15 @@ public:
     }
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnarrowing"
+
 class HphysicalDeviceType : protected HphysicalDeviceVulkanSupportType, 
                             protected HphysicalDeviceEfficiencyType {
 public:
-    HphysicalDeviceType(uint32_t type) : HphysicalDeviceVulkanSupportType(eHphysicalDeviceVulkanSupportType {type & 0b111'000} ), 
-                                         HphysicalDeviceEfficiencyType(eHphysicalDeviceEfficiencyType {type & 0b000'111} ) {}
+    HphysicalDeviceType(uint32_t type) : HphysicalDeviceVulkanSupportType(EHphysicalDeviceVulkanSupportType { type  & 0b111'000 } ), 
+                                         HphysicalDeviceEfficiencyType(EHphysicalDeviceEfficiencyType { type  & 0b000'111 } ) {}
     
-
     bool isSuitable(VkPhysicalDevice device) const {
         return HphysicalDeviceVulkanSupportType::isSuitable(device) && HphysicalDeviceEfficiencyType::isSuitable(device);
     }
