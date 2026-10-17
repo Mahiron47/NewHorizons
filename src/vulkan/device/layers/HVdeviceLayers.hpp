@@ -1,6 +1,0 @@
-#ifndef HV_DEVICE_LAYERS_HPP
-#define HV_DEVICE_LAYERS_HPP
-
-
-
-#endif /* HV_DEVICE_LAYERS_HPP */

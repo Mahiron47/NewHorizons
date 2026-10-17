@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.10.0)
+
+add_executable(test_vk_instance HVinstanceTests.cpp)
+
+target_link_libraries(test_vk_instance PRIVATE Horizons
+											   Catch2::Catch2
+											   Catch2::Catch2WithMain)
+
+catch_discover_tests(test_vk_instance TEST_PREFIX "vk_instanceZZ" 
+    								  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+
+add_subdirectory(layers)
+add_subdirectory(extensions)
