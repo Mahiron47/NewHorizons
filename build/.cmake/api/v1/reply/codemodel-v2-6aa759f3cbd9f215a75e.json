@@ -1,0 +1,256 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "Vulkan::Headers::@5dd1d4b63d58bb7a4098",
+					"jsonFile" : "target-Vulkan__Headers-Debug-61b8fa6af0e782fb41cc.json",
+					"name" : "Vulkan::Headers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Vulkan::Headers::@6ec03113427e53673d7b",
+					"jsonFile" : "target-Vulkan__Headers-Debug-77f60508ac3de689cb65.json",
+					"name" : "Vulkan::Headers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Vulkan::Vulkan::@5dd1d4b63d58bb7a4098",
+					"jsonFile" : "target-Vulkan__Vulkan-Debug-bcd1cd36c6c02c0d6144.json",
+					"name" : "Vulkan::Vulkan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Vulkan::Vulkan::@6ec03113427e53673d7b",
+					"jsonFile" : "target-Vulkan__Vulkan-Debug-3204a21b7b8da294a528.json",
+					"name" : "Vulkan::Vulkan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Vulkan::glslangValidator::@5dd1d4b63d58bb7a4098",
+					"jsonFile" : "target-Vulkan__glslangValidator-Debug-3b9350d361a79f9bfc7c.json",
+					"name" : "Vulkan::glslangValidator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Vulkan::glslangValidator::@6ec03113427e53673d7b",
+					"jsonFile" : "target-Vulkan__glslangValidator-Debug-57c43211333b18aec3ad.json",
+					"name" : "Vulkan::glslangValidator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Vulkan::glslc::@5dd1d4b63d58bb7a4098",
+					"jsonFile" : "target-Vulkan__glslc-Debug-465c70faffb3270c4cc1.json",
+					"name" : "Vulkan::glslc",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Vulkan::glslc::@6ec03113427e53673d7b",
+					"jsonFile" : "target-Vulkan__glslc-Debug-ec4d8ec3859c6fe9829d.json",
+					"name" : "Vulkan::glslc",
+					"projectIndex" : 0
+				}
+			],
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					],
+					"jsonFile" : "directory-.-Debug-b5805d5c08fd3d92def4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						2,
+						4,
+						6
+					],
+					"build" : "src/vulkan-context",
+					"jsonFile" : "directory-src.vulkan-context-Debug-170e42ee6f810e301d4e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/vulkan-context",
+					"targetIndexes" : 
+					[
+						0,
+						4
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						1,
+						3,
+						5,
+						7
+					],
+					"build" : "src/windows",
+					"jsonFile" : "directory-src.windows-Debug-c6675879c3fef7143cdb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/windows",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "src/text-document-viewer",
+					"jsonFile" : "directory-src.text-document-viewer-Debug-c48bb61c41df6866e5b4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/text-document-viewer",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "src/text-pronounce-handle",
+					"jsonFile" : "directory-src.text-pronounce-handle-Debug-5244c9a3e5038e923e64.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src/text-pronounce-handle",
+					"targetIndexes" : 
+					[
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					],
+					"name" : "horizon",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "compile_vulkan_shaders::@5dd1d4b63d58bb7a4098",
+					"jsonFile" : "target-compile_vulkan_shaders-Debug-ace913a66fdc7f424a7a.json",
+					"name" : "compile_vulkan_shaders",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "horizon::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-horizon-Debug-54541dc7d93be4f7dc39.json",
+					"name" : "horizon",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "text-document-viewer::@85b8398c1d0dbe48f6b1",
+					"jsonFile" : "target-text-document-viewer-Debug-1278760803b893e7ebdd.json",
+					"name" : "text-document-viewer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "text-pronounce-handle::@f96da5d2c25921952256",
+					"jsonFile" : "target-text-pronounce-handle-Debug-e0db95dde84e68ccbaee.json",
+					"name" : "text-pronounce-handle",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "vulkan-context::@5dd1d4b63d58bb7a4098",
+					"jsonFile" : "target-vulkan-context-Debug-d6dfb41fc0e5b814cedc.json",
+					"name" : "vulkan-context",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "windows::@6ec03113427e53673d7b",
+					"jsonFile" : "target-windows-Debug-d79277eaa7dbb6b2f36b.json",
+					"name" : "windows",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "Z:/user/workspaces/NewHorizons1/NewHorizons/build",
+		"source" : "Z:/user/workspaces/NewHorizons1/NewHorizons"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 11
+	}
+}

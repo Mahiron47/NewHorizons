@@ -1,0 +1,16 @@
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/CMakeFiles/horizon.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/CMakeFiles/edit_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/CMakeFiles/rebuild_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/vulkan-context/CMakeFiles/compile_vulkan_shaders.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/vulkan-context/CMakeFiles/vulkan-context.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/vulkan-context/CMakeFiles/edit_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/vulkan-context/CMakeFiles/rebuild_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/windows/CMakeFiles/windows.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/windows/CMakeFiles/edit_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/windows/CMakeFiles/rebuild_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-document-viewer/CMakeFiles/text-document-viewer.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-document-viewer/CMakeFiles/edit_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-document-viewer/CMakeFiles/rebuild_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-pronounce-handle/CMakeFiles/text-pronounce-handle.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-pronounce-handle/CMakeFiles/edit_cache.dir
+Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-pronounce-handle/CMakeFiles/rebuild_cache.dir

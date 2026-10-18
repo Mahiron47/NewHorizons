@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"Z:/user/workspaces/NewHorizons1/NewHorizons/build/cmake_install.cmake",
+		"Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/vulkan-context/cmake_install.cmake",
+		"Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/windows/cmake_install.cmake",
+		"Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-document-viewer/cmake_install.cmake",
+		"Z:/user/workspaces/NewHorizons1/NewHorizons/build/src/text-pronounce-handle/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
